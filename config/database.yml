@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  port: <%= ENV.fetch('DB_PORT') { '5432' } %>
+  host: <%= ENV.fetch('DB_HOST') { 'localhost' } %>
+
+development:
+  <<: *default
+  database: zrp_api_development
+
+test:
+  <<: *default
+  database: zrp_api_test
+
+production:
+  <<: *default
+  database: zrp_api_production

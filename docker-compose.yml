@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  db_zrp:
+    image: postgres:11.10-alpine
+    container_name: db_zrp
+    ports:
+      - '5432'
+    expose:
+      - '5432'
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: zrp_user
+      POSTGRES_PASSWORD: zrp_123
+
+  web_zrp:
+    build: .
+    stdin_open: true
+    tty: true
+    container_name: web_zrp
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/zrp_api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db_zrp
